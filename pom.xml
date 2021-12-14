@@ -3,7 +3,21 @@
   <groupId>fr.dauphine.ja.boyer-nabet-magny.InfinityLoop</groupId>
   <artifactId>InfinityLoop</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
   <dependencies>
+  	  	<!-- give one fat jar  -  https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-shade-plugin -->
+	<dependency>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-shade-plugin</artifactId>
+	    <version>3.1.0</version>
+	</dependency>
+	  
   	<!-- https://mvnrepository.com/artifact/junit/junit -->
   	<dependency>
 	  	<groupId>junit</groupId>
@@ -18,4 +32,39 @@
 	    <version>1.5.0</version>
 	</dependency>
   </dependencies>
+  
+  <build>
+	  <plugins>
+	  
+	  <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-jar-plugin</artifactId>
+	      <version>3.0.2</version>
+	      <configuration>
+	        <archive>
+	          <manifest>
+	            <addClasspath>true</addClasspath>
+	            <mainClass>fr.dauphine.ja.boyer-nabet-magny.main.Main</mainClass>
+	          </manifest>
+	        </archive>
+	      </configuration>
+	    </plugin>
+	    
+	    <plugin>
+	      <!-- Build an executable JAR -->
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-shade-plugin</artifactId>
+	      <version>3.1.0</version>
+	      <executions>
+	          <execution>
+	            <phase>package</phase>
+	            <goals>
+	              <goal>shade</goal>
+	            </goals>
+	 
+	          </execution>
+	        </executions>      
+	    </plugin>
+	  </plugins>
+	</build>
 </project>
