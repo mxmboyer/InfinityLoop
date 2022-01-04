@@ -151,7 +151,7 @@ public class Grid {
 	}
 
 	/**
-	 * Check if a piece has a fixed neighbor for each one of its connecotrs
+	 * Check if a piece has a fixed neighbor for each one of its connectors
 	 * 
 	 * @param p
 	 *            the piece
@@ -221,7 +221,7 @@ public class Grid {
 	 * @return the list of neighbors
 	 */
 	public ArrayList<Piece> listOfNeighbours(Piece p) {
-		ArrayList<Piece> lp = new ArrayList<>();
+		ArrayList<Piece> lp = new ArrayList<Piece>();
 		for (Orientation ori : p.getConnectors()) {
 			int oppPieceY = ori.getOpposedPieceCoordinates(p)[0];// i
 			int oppPieceX = ori.getOpposedPieceCoordinates(p)[1];// j
