@@ -98,11 +98,17 @@ public class Piece {
 
 	public void setType(PieceType type) {
 		this.type = type;
+		this.possibleOrientations = type.getListOfPossibleOri();
 	}
 
 	public void setOrientation(int orientationValue) {
 		this.orientation = type.getOrientation(Orientation.getOrifromValue(orientationValue));
 		this.connectors = type.setConnectorsList(this.orientation);
+	}
+	
+	public void setOrientation(Orientation orientation) {
+		this.orientation = type.getOrientation(orientation);
+		this.connectors = type.setConnectorsList(orientation);
 	}
 
 	public Orientation getOrientation() {

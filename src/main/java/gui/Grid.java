@@ -97,7 +97,7 @@ public class Grid {
 	 * 
 	 * @param line
 	 * @param column
-	 * @return true if the case is a corner
+	 * @return true if the case is a borderLine
 	 */
 	public boolean isBorderLine(int line, int column) {
 		if (line == 0 && column > 0 && column < this.getWidth() - 1) {
@@ -114,7 +114,7 @@ public class Grid {
 	 * 
 	 * @param line
 	 * @param column
-	 * @return true if the case is a corner
+	 * @return true if the case is a borderColumn
 	 */
 	public boolean isBorderColumn(int line, int column) {
 		if (column == 0 && line > 0 && line < this.getHeight() - 1) {

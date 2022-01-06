@@ -40,7 +40,7 @@ public enum PieceType {
 	 * Given the actual PieceType, tells all the possible Orientation for this piece
 	 * @return a list of possible orientations
 	 */
-	ArrayList<Orientation> getListOfPossibleOri() {
+	public ArrayList<Orientation> getListOfPossibleOri() {
 		ArrayList<Orientation> oriList = new ArrayList<Orientation>();
 		switch(this.intValue) {
 			case 0:
@@ -69,7 +69,7 @@ public enum PieceType {
 		return oriList;
 	}
 	
-	LinkedList<Orientation> setConnectorsList(Orientation orientation) {
+	public LinkedList<Orientation> setConnectorsList(Orientation orientation) {
 		LinkedList<Orientation> connectorsList = new LinkedList<Orientation>();
 		switch(this.intValue) {
 			case 1:

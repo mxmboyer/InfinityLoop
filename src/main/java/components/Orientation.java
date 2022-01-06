@@ -56,8 +56,22 @@ public enum Orientation {
 	}
 
 	public int[] getOpposedPieceCoordinates(Piece p) {
-		// TODO Auto-generated method stub
-		return null;
+		int [] oppPiece = new int[2];
+		switch(this.compassDirection) {
+			case 0:
+				oppPiece[0]=p.getPosY()-1;
+				oppPiece[1]=p.getPosX();
+			case 1:
+				oppPiece[0]=p.getPosY();
+				oppPiece[1]=p.getPosX()+1;
+			case 2:
+				oppPiece[0]=p.getPosY()+1;
+				oppPiece[1]=p.getPosX();
+			case 3:
+				oppPiece[0]=p.getPosY();
+				oppPiece[1]=p.getPosX()-1;
+		}
+		return oppPiece;
 	}
 	
 	/**
