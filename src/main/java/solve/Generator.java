@@ -63,6 +63,8 @@ public class Generator {
 						Piece bottomNeighbor = Generator.filledGrid.bottomNeighbor(p);
 						// si la piece a droite a un connecteur a gauche (donc doit se connecter a nous)
 						// alors on doit forcement se connecter a droite et on rajoute cette orientation dans les contraintes
+						// nb : à vérifier mais vu que l'on avance de gauche à droite et de haut en bas, cela ne sert surement à rien 
+						// de verifier les voisins de droite et du bas car il n'y en aura pas encore
 						if(rightNeighbor!=null && rightNeighbor.hasLeftConnector()) contrainteConnPos.add(1);
 						if(leftNeighbor!=null && leftNeighbor.hasRightConnector()) contrainteConnPos.add(3);
 						if(topNeighbor!=null && topNeighbor.hasBottomConnector()) contrainteConnPos.add(0);
