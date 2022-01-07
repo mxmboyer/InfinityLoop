@@ -1,5 +1,9 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import components.Orientation;
@@ -380,7 +384,7 @@ public class Grid {
 	 * 
 	 * @param line
 	 * @param column
-	 * @return true if a piece est connectée à chaque de ses connecteursà))p
+	 * @return true if a piece est connectee a� chacun de ses connecteurs
 	 */
 	public boolean isTotallyConnected(Piece p) {
 		if (p.getType() != PieceType.VOID) {
@@ -550,5 +554,45 @@ public class Grid {
 			s += "\n";
 		}
 		return s;
+	}
+	
+	public void generateGridFromFile(String fileName) {
+		FileReader fr = null;
+		try {
+			fr = new FileReader(fileName);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		BufferedReader br = new BufferedReader(fr);
+		
+		String width = null;
+		String height = null;
+		try {
+			width = br.readLine();
+			height = br.readLine();
+			
+			this.setHeight(Integer.valueOf(height));
+			this.setWidth(Integer.valueOf(width));
+			
+			String line;
+			while((line = br.readLine()) != null) {
+				
+				this.setPiece(nbcc, nbcc, null);
+			}
+			
+			for(int h = 0 ; h < this.getHeight() ; h++) {
+				for(int w = 0 ; w < this.getWidth() ; w++) {
+					line = br.readLine();
+					Piece p = new Piece(h, w);
+					p.setType(PieceType.values()[Integer.valueOf(String.valueOf(line.charAt(0)))]);
+					p.setOrientation(Integer.valueOf(String.valueOf(line.charAt(2))));
+					this.setPiece(h, w, p);
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

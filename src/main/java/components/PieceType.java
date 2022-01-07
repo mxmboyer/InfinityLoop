@@ -100,7 +100,7 @@ public enum PieceType {
 		return connectorsList;
 	}
 	
-	static PieceType getTypefromValue(int typeValue) {
+	public static PieceType getTypefromValue(int typeValue) {
 		for(PieceType pt : PieceType.values()) {
 			if(typeValue == pt.intValue) {
 				return pt;

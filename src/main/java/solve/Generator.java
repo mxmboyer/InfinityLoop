@@ -43,8 +43,9 @@ public class Generator {
 			for(j = 0; j < Generator.filledGrid.getWidth(); j++) {
 				Piece p = new Piece(i,j);
 				List<Integer> possiblePiece = new ArrayList<Integer>(){{add(0);add(1);add(5);}};
-				List<Integer> contrainteConnPos = new ArrayList<Integer>();//mettre un conn pour chacune de ces orientations
+				List<Orientation> contrainteConnPos = new ArrayList<Orientation>();//mettre un conn pour chacune de ces orientations
 				List<Integer> contrainteConnNeg = new ArrayList<Integer>(); //ne pas mettre de conn pour cette orientation
+				//rajouter dans les contraintes neg le cas d'un voisin null
 				List<Orientation> possibleOri = new ArrayList<Orientation>();
 				
 				if(Generator.filledGrid.isCorner(j,i)) {
@@ -71,77 +72,87 @@ public class Generator {
 				}
 				
 				else {
+					possiblePiece.add(2);
+					possiblePiece.add(3);
 					possiblePiece.add(4);
 				}
 				
-				ArrayList<Piece> voisins = Generator.filledGrid.listOfNeighbours(p);
-				if(voisins.size()!=0) { //si notre piece a des voisins 
-					Piece leftNeighbor = Generator.filledGrid.leftNeighbor(p);
-					Piece topNeighbor = Generator.filledGrid.topNeighbor(p);
-					// si la piece a droite a un connecteur a gauche (donc doit se connecter a nous)
-					// alors on doit forcement se connecter a droite et on rajoute cette orientation dans les contraintes
-					// nb :on avance de gauche � droite et de haut en bas, pas encore de voisins de droite et de bas
-					if(leftNeighbor!=null && leftNeighbor.hasRightConnector()) contrainteConnPos.add(3);
-					if(topNeighbor!=null && topNeighbor.hasBottomConnector()) contrainteConnPos.add(0);
-					else possiblePiece.remove(0);
+				
+				Piece leftNeighbor = Generator.filledGrid.leftNeighbor(p);
+				Piece topNeighbor = Generator.filledGrid.topNeighbor(p);
+				// si la piece a droite a un connecteur a gauche (donc doit se connecter a nous)
+				// alors on doit forcement se connecter a droite et on rajoute cette orientation dans les contraintes
+				// nb :on avance de gauche � droite et de haut en bas, pas encore de voisins de droite et de bas
+				if(leftNeighbor!=null && leftNeighbor.hasRightConnector()) {
+					contrainteConnPos.add(Orientation.getOrifromValue(3));
+					possiblePiece.remove(0);
+				}
+				else {
+					contrainteConnNeg.add(3);
+				}
+				if(topNeighbor!=null && topNeighbor.hasBottomConnector()) {
+					contrainteConnPos.add(Orientation.getOrifromValue(0));
+					possiblePiece.remove(0);
+				}
+				else {
+					contrainteConnNeg.add(0);
 				}
 				
-				//on choisit le type de piece parmis ceux possible
-				rand = (int)(Math.random() * possiblePiece.size());
-				int type = possiblePiece.get(rand);
 				if(contrainteConnPos.size()!=0) {
-					while(contrainteConnPos.size()!=PieceType.values()[type].getNbConnectors()) {
-						possiblePiece.remove(type);
-						rand = (int)(Math.random() * possiblePiece.size());
-						type = possiblePiece.get(rand);
-					}
-				}
-				p.setType(PieceType.values()[type]);
-				
-				if(Generator.filledGrid.isCorner(j,i) || Generator.filledGrid.isBorderLine(j,i) || Generator.filledGrid.isBorderColumn(j,i)) {
-					//on liste les orientations ou il n'y a pas de prbl avec les bordures
-					for(Orientation ori : p.getPossibleOrientations()){ 
-						LinkedList<Orientation> connecteurs = p.getType().setConnectorsList(ori);
-						for(Orientation orientation: connecteurs) {
-							if(!contrainteConnNeg.contains(orientation)) {
-								possibleOri.add(ori);
-							}
+					for(int t : possiblePiece) {
+						if(contrainteConnPos.size()>PieceType.values()[t].getNbConnectors()) {
+							possiblePiece.remove(t);
 						}
 					}
 				}
-				else {
-					for(Orientation ori : p.getPossibleOrientations()){ 
-						possibleOri.add(ori);
+				
+				//on choisit le type de piece parmis ceux possible
+				if(possiblePiece.size()==0) System.out.println("error : no possible piece"); // DEBUG
+				rand = (int)(Math.random() * possiblePiece.size());
+				p.setType(PieceType.values()[possiblePiece.get(rand)]);
+				
+				boolean check;
+				//on liste les orientations ou il n'y a pas de prbl avec les contraintes negatives
+				for(Orientation ori : p.getPossibleOrientations()){ 
+					LinkedList<Orientation> connecteurs = p.getType().setConnectorsList(ori);
+					check = true;
+					for(Orientation orientation: connecteurs) {
+						if(contrainteConnNeg.contains(orientation.getCompassDirection())) {
+							check = false;
+						}
+					}
+					if(check) possibleOri.add(ori);
+				}
+				
+				
+				if(contrainteConnPos.size()!=0) {
+					for(Orientation ori : possibleOri) {
+						LinkedList<Orientation> connecteurs = p.getType().setConnectorsList(ori);
+						if(!connecteurs.containsAll(contrainteConnPos)) {
+							possibleOri.remove(ori);
+						}
 					}
 				}
 				
-				//on prend une orientation parmis celles possible
+				if(possibleOri.size() == 0) System.out.println("error : no possible ori"); //DEBUG
 				rand = (int)(Math.random() * possibleOri.size());
-				Orientation orientation = possibleOri.get(rand);
-				// si on a des voisins, on verifie que l'orientation choisie permet de faire de se connecter 
-				// a tous les voisins sont c'est necessaire :
-				if(contrainteConnPos.size()!=0) {
-					LinkedList<Orientation> connecteurs = p.getType().setConnectorsList(orientation);
-					while(!connecteurs.containsAll(contrainteConnPos)) {
-						possibleOri.remove(orientation);
-						rand = (int)(Math.random() * possibleOri.size());
-						orientation = possibleOri.get(rand);
-					}
-				}
-				p.setOrientation(orientation);
+				p.setOrientation(possibleOri.get(rand));
 				
 				Generator.filledGrid.setPiece(j, i, p);
 			}
 		}
 	}
 	
-	public static void generateLevel(String fileName, int nbcc) throws IOException { 
+	public static void generateLevel(String fileName) throws IOException { 
 		
 		Generator.generateGrillFilled();
 			
-		if(nbcc!=1) {
+		if(Generator.filledGrid.getNbcc()!=-1) {
 			//on compte le nombre de nbcc et si ça correspond pas au nbr demandé
 			//alors on regénère une grille jusqu'à ce que ce soit bon 
+			
+			//plan b : rajouter ou retirer qq connecteurs pour avoir un bon nbcc
+			// coder une fonction qui compte le nombre de nbcc !
 			
 		}
 		
@@ -160,7 +171,7 @@ public class Generator {
 					rand = (int)(Math.random() * possibleOri.size());
 					p.setOrientation(possibleOri.get(rand));
 					
-					fw.write(p.getType().getIntValue()+ "\n" + p.getOrientation().getCompassDirection());
+					fw.write(p.getType().getIntValue()+ "," + p.getOrientation().getCompassDirection() + "\n");
 				}
 			}
 			

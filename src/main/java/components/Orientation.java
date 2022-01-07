@@ -31,7 +31,7 @@ public enum Orientation {
 	 * @param orientationValue : an int between 0 and 3 representing an orientation
 	 * @return an Orientation
 	 */
-	static Orientation getOrifromValue(int orientationValue) {
+	public static Orientation getOrifromValue(int orientationValue) {
 		for(Orientation o : Orientation.values()) {
 			if(o.compassDirection == orientationValue) {
 				return o;
