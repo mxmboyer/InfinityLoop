@@ -1,5 +1,7 @@
 package solve;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +36,9 @@ public class Generator {
 		//parametres du prof -> pas compris inputGrid
 	}
 	
-	public static void generateLevel(String fileName) { //attention pour l'instant on ne prend pas en compte c
+	public static void generateLevel(String fileName) { 
+		//attention pour l'instant on ne prend pas en compte c
+		//et rentrer tout ça dans un fichier
 		int i, j, rand;
 		for(i = 0; i < Generator.filledGrid.getHeight(); i++) {
 			for(j = 0; j < Generator.filledGrid.getWidth(); j++) {
@@ -128,6 +132,11 @@ public class Generator {
 				p.setOrientation(orientation);
 				
 				Generator.filledGrid.setPiece(j, i, p);
+				
+				try (FileWriter fw = new FileWriter(new File(fileName))) {
+		 
+		            fw.write("humpty dumpty");
+		        } 
 			}
 		}
 	}
