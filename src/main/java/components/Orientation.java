@@ -22,6 +22,10 @@ public enum Orientation {
 		this.compassDirection = compassDirection;
 	}
 	
+	public int getCompassDirection() {
+		return this.compassDirection;
+	}
+	
 	/**
 	 * For a given number, returns the Orientation associated to this number
 	 * @param orientationValue : an int between 0 and 3 representing an orientation
@@ -33,12 +37,12 @@ public enum Orientation {
 				return o;
 			}
 		}
-		return Orientation.NORTH; //à modifier : trouver + propre
+		return Orientation.NORTH; //ï¿½ modifier : trouver + propre
 	}
 	
 	/**
 	 * 
-	 * @return an Orientation turned of 90° to the right (clockwise)
+	 * @return an Orientation turned of 90ï¿½ to the right (clockwise)
 	 */
 	Orientation turn90() {
 		switch(this.compassDirection) {

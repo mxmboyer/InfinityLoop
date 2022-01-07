@@ -2,6 +2,7 @@ package solve;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,9 +37,7 @@ public class Generator {
 		//parametres du prof -> pas compris inputGrid
 	}
 	
-	public static void generateLevel(String fileName) { 
-		//attention pour l'instant on ne prend pas en compte c
-		//et rentrer tout �a dans un fichier
+	public static void generateGrillFilled() {
 		int i, j, rand;
 		for(i = 0; i < Generator.filledGrid.getHeight(); i++) {
 			for(j = 0; j < Generator.filledGrid.getWidth(); j++) {
@@ -81,7 +80,7 @@ public class Generator {
 					Piece topNeighbor = Generator.filledGrid.topNeighbor(p);
 					// si la piece a droite a un connecteur a gauche (donc doit se connecter a nous)
 					// alors on doit forcement se connecter a droite et on rajoute cette orientation dans les contraintes
-					// nb :on avance de gauche � droite et de haut en bas, pas encore de voisins de droite et de bas
+					// nb :on avance de gauche � droite et de haut en bas, pas encore de voisins de droite et de bas
 					if(leftNeighbor!=null && leftNeighbor.hasRightConnector()) contrainteConnPos.add(3);
 					if(topNeighbor!=null && topNeighbor.hasBottomConnector()) contrainteConnPos.add(0);
 					else possiblePiece.remove(0);
@@ -132,15 +131,44 @@ public class Generator {
 				p.setOrientation(orientation);
 				
 				Generator.filledGrid.setPiece(j, i, p);
-				
-				try (FileWriter fw = new FileWriter(new File(fileName))) {
-		 
-		            fw.write("humpty dumpty");
-		        } 
 			}
 		}
 	}
 	
+	public static void generateLevel(String fileName, int nbcc) throws IOException { 
+		
+		Generator.generateGrillFilled();
+			
+		if(nbcc!=1) {
+			//on compte le nombre de nbcc et si ça correspond pas au nbr demandé
+			//alors on regénère une grille jusqu'à ce que ce soit bon 
+			
+		}
+		
+		try {
+			FileWriter fw = new FileWriter(new File(fileName));
+            fw.write(Generator.filledGrid.getWidth()+ "\n" + Generator.filledGrid.getHeight());
+            
+            int i, j, rand;
+			
+			//la grille est sous sa forme résolue, il faut donc changer les orientations au hasard 
+			//on en profite pour recopier les pieces dans le fichier
+			for(i = 0; i < Generator.filledGrid.getHeight(); i++) {
+				for(j = 0; j < Generator.filledGrid.getWidth(); j++) {
+					Piece p = Generator.filledGrid.getPiece(i,j);
+					ArrayList<Orientation> possibleOri = p.getPossibleOrientations();
+					rand = (int)(Math.random() * possibleOri.size());
+					p.setOrientation(possibleOri.get(rand));
+					
+					fw.write(p.getType().getIntValue()+ "\n" + p.getOrientation().getCompassDirection());
+				}
+			}
+			
+			fw.flush();
+            fw.close();
+        } 
+		catch(Exception e){System.out.println(e);} 
+	}
 	
 	
 	public static int[] copyGrid(Grid filledGrid, Grid inputGrid, int i, int j) {

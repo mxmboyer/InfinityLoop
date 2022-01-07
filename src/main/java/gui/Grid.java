@@ -380,7 +380,7 @@ public class Grid {
 	 * 
 	 * @param line
 	 * @param column
-	 * @return true if a connector of a piece is connected
+	 * @return true if a piece est connectée à chaque de ses connecteursà))p
 	 */
 	public boolean isTotallyConnected(Piece p) {
 		if (p.getType() != PieceType.VOID) {

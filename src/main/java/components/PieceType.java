@@ -28,12 +28,16 @@ public enum PieceType {
 	}
 	
 	/**
-	 *  Pas compris pourquoi on veut get l'orientation de celle passée en paramètre ??
+	 *  Pas compris pourquoi on veut get l'orientation de celle passï¿½e en paramï¿½tre ??
 	 * @param orientation
 	 * @return
 	 */
 	Orientation getOrientation(Orientation orientation) {
 		return orientation;
+	}
+	
+	public int getIntValue() {
+		return this.intValue;
 	}
 	
 	/**
@@ -102,7 +106,7 @@ public enum PieceType {
 				return pt;
 			}
 		}
-		return PieceType.VOID; //à modifier : trouver + propre
+		return PieceType.VOID; //ï¿½ modifier : trouver + propre
 	}
 
 	public int getNbConnectors() {
