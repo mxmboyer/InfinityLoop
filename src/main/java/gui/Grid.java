@@ -1,14 +1,17 @@
 package gui;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import components.Orientation;
 import components.Piece;
 import components.PieceType;
+import solve.Generator;
 
 /**
  * Grid handler and peces'functions which depends of the grid
@@ -384,7 +387,7 @@ public class Grid {
 	 * 
 	 * @param line
 	 * @param column
-	 * @return true if a piece est connectee a  chacun de ses connecteurs
+	 * @return true if a piece est connectee aï¿½ chacun de ses connecteurs
 	 */
 	public boolean isTotallyConnected(Piece p) {
 		if (p.getType() != PieceType.VOID) {
@@ -594,5 +597,24 @@ public class Grid {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void GenerateFileFromGrid(String fileName) {
+		try {
+			FileWriter fw = new FileWriter(new File(fileName));
+            fw.write(this.width+ "\n" + this.height);
+            
+            int i, j;
+			for(i = 0; i < this.height; i++) {
+				for(j = 0; j < this.width; j++) {
+					Piece p = this.pieces[i][j];
+					fw.write(p.getType().getIntValue()+ "," + p.getOrientation().getCompassDirection() + "\n");
+				}
+			}
+			
+			fw.flush();
+            fw.close();
+        } 
+		catch(Exception e){System.out.println(e);} 
 	}
 }

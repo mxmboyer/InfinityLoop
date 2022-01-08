@@ -156,11 +156,25 @@ public class Piece {
 	}
 
 	/**
-	 * Turn the piece 90° on the right and redefine the connectors's position
+	 * Turn the piece 90ï¿½ on the right and redefine the connectors's position
 	 */
 	public void turn() {
 		this.orientation = type.getOrientation(orientation.turn90());
 		this.connectors = type.setConnectorsList(orientation);
+	}
+	
+	/**
+	 * Tourne une piece en prenant une autre de ses possibles orientations
+	 */
+	public void turnFromPossibleOrientation() {
+		ArrayList<Orientation> ori = getPossibleOrientations();
+		if(ori.size()!=1) {
+			this.orientation = type.getOrientation(orientation.turn90());
+			while(!ori.contains(this.orientation)){
+				this.orientation = type.getOrientation(orientation.turn90());
+			}
+			this.connectors = type.setConnectorsList(orientation);
+		}
 	}
 
 	@Override
