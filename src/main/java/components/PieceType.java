@@ -49,21 +49,26 @@ public enum PieceType {
 		switch(this.intValue) {
 			case 0:
 				oriList.add(Orientation.NORTH);
+				break;
 			case 1:
 				oriList.add(Orientation.NORTH);
 				oriList.add(Orientation.EAST);
 				oriList.add(Orientation.SOUTH);
 				oriList.add(Orientation.WEST);
+				break;
 			case 2:
 				oriList.add(Orientation.NORTH);
 				oriList.add(Orientation.EAST);
+				break;
 			case 3:
 				oriList.add(Orientation.NORTH);
 				oriList.add(Orientation.EAST);
 				oriList.add(Orientation.SOUTH);
 				oriList.add(Orientation.WEST);
+				break;
 			case 4:
 				oriList.add(Orientation.NORTH);
+				break;
 			case 5:
 				oriList.add(Orientation.NORTH);
 				oriList.add(Orientation.EAST);
@@ -78,9 +83,11 @@ public enum PieceType {
 		switch(this.intValue) {
 			case 1:
 				connectorsList.add(orientation);
+				break;
 			case 2:
 				connectorsList.add(orientation);
 				connectorsList.add(orientation.getOpposedOrientation());
+				break;
 			case 3:
 				Orientation opposed = orientation.getOpposedOrientation();
 				for(Orientation o : Orientation.values()) {
@@ -88,11 +95,13 @@ public enum PieceType {
 						connectorsList.add(o);
 					}
 				}
+				break;
 			case 4:
 				connectorsList.add(Orientation.NORTH);
 				connectorsList.add(Orientation.EAST);
 				connectorsList.add(Orientation.SOUTH);
 				connectorsList.add(Orientation.WEST);
+				break;
 			case 5:
 				connectorsList.add(orientation);
 				connectorsList.add(orientation.turn90());
