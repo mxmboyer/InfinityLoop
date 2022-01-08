@@ -33,6 +33,10 @@ public class Generator {
 		Generator.filledGrid = new Grid(w, h, c);
 	}
 	
+	public Grid getFilledGrid() {
+		return this.filledGrid;
+	}
+	
 	public static void generateLevel(String fileName, Grid inputGrid) {
 		//parametres du prof -> pas compris inputGrid
 	}

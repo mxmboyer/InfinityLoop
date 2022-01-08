@@ -16,7 +16,7 @@ public class Checker {
 		this.inputGrid.generateGridFromFile(fileName);
 	}
 	
-	public void isSolution() {
+	public boolean isSolution() {
 		Piece[][] pieces = this.inputGrid.getAllPieces();
 		boolean check = true;
 		for(int h = 0 ; h < this.inputGrid.getHeight() && check; h++) {
@@ -30,5 +30,6 @@ public class Checker {
 		if(check) {
 			System.out.println("SOLVED : true");
 		}
+		return check;
 	}
 }
