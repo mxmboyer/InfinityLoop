@@ -197,23 +197,23 @@ public class Generator {
 	 */
 	public static ArrayList<PieceType> possiblePieceType(Piece p, int top, int left) {
 		ArrayList<PieceType> possiblePieceType = new ArrayList<PieceType>();
-		if(p.getPosY() == filledGrid.getHeight() - 1 & p.getPosX() == filledGrid.getWidth() - 1) { // coin bas droit
+		if(p.getPosY() == filledGrid.getHeight() - 1 && p.getPosX() == filledGrid.getWidth() - 1) { // coin bas droit
 			for(PieceType pt : PieceType.values()) { // choix bonne piece
 				if(pt.getNbConnectors() == top + left) {
 					possiblePieceType.add(pt);
 				}
 			}
 		}
-		else if(p.getPosY() == filledGrid.getHeight() - 1 | p.getPosX() == filledGrid.getWidth() - 1) { // dernière ligne/colonne
+		else if(p.getPosY() == filledGrid.getHeight() - 1 || p.getPosX() == filledGrid.getWidth() - 1) { // dernière ligne/colonne
 			for(PieceType pt : PieceType.values()) { // choix bonnes pieces possibles
-				if(pt.getNbConnectors() >= top + left & pt.getNbConnectors() <= 1 + top + left) {
+				if(pt.getNbConnectors() >= top + left && pt.getNbConnectors() <= 1 + top + left) {
 					possiblePieceType.add(pt);
 				}
 			}
 		}
 		else { // autres pieces sans contrainte bas et droite
 			for(PieceType pt : PieceType.values()) { // choix bonnes pieces possibles
-				if(pt.getNbConnectors() >= top + left & pt.getNbConnectors() <= 2 + top + left) {
+				if(pt.getNbConnectors() >= top + left && pt.getNbConnectors() <= 2 + top + left) {
 					possiblePieceType.add(pt);
 				}
 			}
@@ -222,7 +222,7 @@ public class Generator {
 	}
 	
 	public static void choosePieceTypeAndOrientation(Piece p, ArrayList<PieceType> possiblePieceType) {
-		if(filledGrid.isCorner(p.getPosY(), p.getPosX()) & possiblePieceType.contains(PieceType.BAR)) {
+		if(filledGrid.isCorner(p.getPosY(), p.getPosX()) && possiblePieceType.contains(PieceType.BAR)) {
 			possiblePieceType.remove(PieceType.BAR); // si coin on retire BAR car impossible
 		}
 
@@ -238,6 +238,7 @@ public class Generator {
 			System.out.println(p.getPossibleOrientations());
 			for(Orientation ori : p.getPossibleOrientations()) {
 				p.setOrientation(ori);
+				System.out.println(p.getConnectors());
 				if(filledGrid.isValidOrientation(p.getPosY(), p.getPosX())) {
 					break; // si orientation ok on quitte boucle for, sinon on passera a la piece d apres
 				}

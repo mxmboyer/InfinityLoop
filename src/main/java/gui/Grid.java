@@ -417,66 +417,110 @@ public class Grid {
 		if (this.getPiece(line, column).getType() != PieceType.VOID) {
 			if (line == 0) {
 				if (column == 0) {
-					if (this.getPiece(line, column).hasLeftConnector())
+					if (this.getPiece(line, column).hasLeftConnector()) {
+						System.out.println("coin haut gauche : conn gauche");
 						return false;
+					}
 				} else if (column == this.getWidth() - 1) {
-					if (this.getPiece(line, column).hasRightConnector())
+					if (this.getPiece(line, column).hasRightConnector()) {
+						System.out.println("coin haut droit : conn droit");
 						return false;
+					}
 				}
-				if (this.getPiece(line, column).hasTopConnector())
+				if (this.getPiece(line, column).hasTopConnector()) {
+					System.out.println("piece haut : conn haut");
 					return false;
-				if (!this.getPiece(line, column).hasRightConnector() && rn != null && rn.hasLeftConnector())
+				}
+				if (!this.getPiece(line, column).hasRightConnector() && rn != null && rn.hasLeftConnector()) {
+					System.out.println("piece haut : pas conn droit & voisin droite : conn gauche");
 					return false;
-				if (this.getPiece(line, column).hasRightConnector() && rn != null && !rn.hasLeftConnector())
+				}
+				if (this.getPiece(line, column).hasRightConnector() && rn != null && !rn.hasLeftConnector()) {
+					System.out.println("piece haut : conn droit & voisin droite : pas conn gauche");
 					return false;
-				if (!this.getPiece(line, column).hasBottomConnector() && bn != null && bn.hasTopConnector())
+				}
+				if (!this.getPiece(line, column).hasBottomConnector() && bn != null && bn.hasTopConnector()) {
+					System.out.println("piece haut : pas conn bas & voisin bas : conn haut");
 					return false;
-				if (this.getPiece(line, column).hasBottomConnector() && bn != null && !bn.hasTopConnector())
+				}
+				if (this.getPiece(line, column).hasBottomConnector() && bn != null && !bn.hasTopConnector()) {
+					System.out.println("piece haut : conn bas & voisin bas : pas conn haut");
 					return false;
+				}
 
 			} else if (line > 0 && line < this.getHeight() - 1) {
 				if (column == 0) {
-					if (this.getPiece(line, column).hasLeftConnector())
+					if (this.getPiece(line, column).hasLeftConnector()) {
+						System.out.println("piece gauche : conn gauche");
 						return false;
+					}
 
 				} else if (column == this.getWidth() - 1) {
-					if (this.getPiece(line, column).hasRightConnector())
+					if (this.getPiece(line, column).hasRightConnector()) {
+						System.out.println("piece droite : conn droit");
 						return false;
+					}
 				}
 
-				if (!this.getPiece(line, column).hasRightConnector() && rn != null && rn.hasLeftConnector())
+				if (!this.getPiece(line, column).hasRightConnector() && rn != null && rn.hasLeftConnector()) {
+					System.out.println("piece : pas conn droit & voisin droit : conn gauche");
 					return false;
-				if (this.getPiece(line, column).hasRightConnector() && rn != null && !rn.hasLeftConnector())
+				}
+				if (this.getPiece(line, column).hasRightConnector() && rn != null && !rn.hasLeftConnector()) {
+					System.out.println("piece : conn droit & voisin droit : pas conn gauche");
 					return false;
-				if (!this.getPiece(line, column).hasBottomConnector() && bn != null && bn.hasTopConnector())
+				}
+				if (!this.getPiece(line, column).hasBottomConnector() && bn != null && bn.hasTopConnector()) {
+					System.out.println("piece : pas conn bas & voisin bas : conn haut");
 					return false;
-				if (this.getPiece(line, column).hasBottomConnector() && bn != null && !bn.hasTopConnector())
+				}
+				if (this.getPiece(line, column).hasBottomConnector() && bn != null && !bn.hasTopConnector()) {
+					System.out.println("piece : conn bas & voisin bas : pas conn haut");
 					return false;
+				}
 
 			} else if (line == this.getHeight() - 1) {
 				if (column == 0) {
-					if (this.getPiece(line, column).hasLeftConnector())
+					if (this.getPiece(line, column).hasLeftConnector()) {
+						System.out.println("coin bas gauche : conn gauche");
 						return false;
+					}
 				} else if (column == this.getWidth() - 1) {
-					if (this.getPiece(line, column).hasRightConnector())
+					if (this.getPiece(line, column).hasRightConnector()) {
+						System.out.println("coin bas droit : conn droit");
 						return false;
+					}
 				}
-				if (this.getPiece(line, column).hasBottomConnector())
+				if (this.getPiece(line, column).hasBottomConnector()) {
+					System.out.println("piece bas : conn bas");
 					return false;
-				if (!this.getPiece(line, column).hasRightConnector() && rn != null && rn.hasLeftConnector())
+				}
+				if (!this.getPiece(line, column).hasRightConnector() && rn != null && rn.hasLeftConnector()) {
+					System.out.println("piece bas : pas conn droit & voisin droit : conn gauche");
 					return false;
-				if (this.getPiece(line, column).hasRightConnector() && rn != null && !rn.hasLeftConnector())
+				}
+				if (this.getPiece(line, column).hasRightConnector() && rn != null && !rn.hasLeftConnector()) {
+					System.out.println("piece bas : conn droit & voisin droit : pas conn gauche");
 					return false;
+				}
 
 			}
-			if (this.getPiece(line, column).hasLeftConnector() && ln == null)
+			if (this.getPiece(line, column).hasLeftConnector() && ln == null) {
+				System.out.println("voisin gauche == null");
 				return false;
-			if (this.getPiece(line, column).hasTopConnector() && tn == null)
+			}
+			if (this.getPiece(line, column).hasTopConnector() && tn == null) {
+				System.out.println("voisin haut == null");
 				return false;
-			if (this.getPiece(line, column).hasRightConnector() && rn == null)
+			}
+			if (this.getPiece(line, column).hasRightConnector() && rn == null) {
+				System.out.println("voisin droit == null");
 				return false;
-			if (this.getPiece(line, column).hasBottomConnector() && bn == null)
+			}
+			if (this.getPiece(line, column).hasBottomConnector() && bn == null) {
+				System.out.println("voisin bas == null");
 				return false;
+			}
 		}
 
 		return true;
@@ -523,8 +567,11 @@ public class Grid {
 	public Piece rightNeighbor(Piece p) {
 
 		if (p.getPosX() < this.getWidth() - 1) {
-			if (this.getPiece(p.getPosY(), p.getPosX() + 1).getType() != PieceType.VOID) {
-				return this.getPiece(p.getPosY(), p.getPosX() + 1);
+			Piece piece = this.getPiece(p.getPosY(), p.getPosX() + 1);
+			if (piece != null) {
+				if(piece.getType() != PieceType.VOID) {
+					return this.getPiece(p.getPosY(), p.getPosX() + 1);
+				}
 			}
 		}
 		return null;
@@ -539,8 +586,11 @@ public class Grid {
 	public Piece bottomNeighbor(Piece p) {
 
 		if (p.getPosY() < this.getHeight() - 1) {
-			if (this.getPiece(p.getPosY() + 1, p.getPosX()).getType() != PieceType.VOID) {
-				return this.getPiece(p.getPosY() + 1, p.getPosX());
+			Piece piece = this.getPiece(p.getPosY() + 1, p.getPosX());
+			if(piece != null) {
+				if (piece.getType() != PieceType.VOID) {
+					return this.getPiece(p.getPosY() + 1, p.getPosX());
+				}
 			}
 		}
 		return null;
