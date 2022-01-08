@@ -65,15 +65,19 @@ public enum Orientation {
 			case 0:
 				oppPiece[0]=p.getPosY()-1;
 				oppPiece[1]=p.getPosX();
+				break;
 			case 1:
 				oppPiece[0]=p.getPosY();
 				oppPiece[1]=p.getPosX()+1;
+				break;
 			case 2:
 				oppPiece[0]=p.getPosY()+1;
 				oppPiece[1]=p.getPosX();
+				break;
 			case 3:
 				oppPiece[0]=p.getPosY();
 				oppPiece[1]=p.getPosX()-1;
+				break;
 		}
 		return oppPiece;
 	}
