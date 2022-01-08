@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class Generator {
 	public static void generateLevel(String fileName, Grid inputGrid) {
 		//parametres du prof -> pas compris inputGrid
 	}
-	
+	/*
 	public static void generateGrillFilled() {
 		int i, j, rand;
 		for(i = 0; i < Generator.filledGrid.getHeight(); i++) {
@@ -65,6 +66,7 @@ public class Generator {
 						else contrainteConnNeg.add(2);
 					}
 				}
+				
 				
 				else if(Generator.filledGrid.isBorderLine(j,i) || Generator.filledGrid.isBorderColumn(j,i)) {
 					possiblePiece.add(2);
@@ -101,7 +103,7 @@ public class Generator {
 				else {
 					contrainteConnNeg.add(0);
 				}
-				
+				System.out.println(contrainteConnNeg);
 				if(contrainteConnPos.size()!=0) {
 					for(int t : possiblePiece) {
 						if(contrainteConnPos.size()>PieceType.values()[t].getNbConnectors()) {
@@ -141,8 +143,107 @@ public class Generator {
 				if(possibleOri.size() == 0) System.out.println("error : no possible ori"); //DEBUG
 				rand = (int)(Math.random() * possibleOri.size());
 				p.setOrientation(possibleOri.get(rand));
-				
+				System.out.println(p.toString());
 				Generator.filledGrid.setPiece(j, i, p);
+			}
+		}
+	}*/
+	
+	public static void generateGrillFilled() {
+		for(int h=0 ; h<filledGrid.getHeight() ; h++) {
+			for(int w=0 ; w<filledGrid.getWidth() ; w++) {
+				Piece p = new Piece(h, w);
+				filledGrid.setPiece(h, w, p);
+				Piece leftNeighbor = filledGrid.leftNeighbor(p);
+				Piece topNeighbor = filledGrid.topNeighbor(p);
+				int top, left;
+				if(leftNeighbor != null) {
+					if(leftNeighbor.hasRightConnector()) {
+						left = 1;
+					}
+					else {
+						left = 0;
+					}
+				}
+				else {
+					left = 0;
+				}
+				if(topNeighbor != null) {
+					if(topNeighbor.hasBottomConnector()) {
+						top = 1;
+					}
+					else {
+						top = 0;
+					}
+				}
+				else {
+					top = 0;
+				}
+				ArrayList<PieceType> possiblePieceType = possiblePieceType(p, top, left);
+				choosePieceTypeAndOrientation(p, possiblePieceType);
+				System.out.println(p.toString());
+			}
+		}
+	}
+	
+	/**
+	 * this function returns possible PieceType for a piece
+	 * this function may return impossible type of pieces like bar and ltype when the piece can have 2 connectors
+	 * but we do not know where they are : sometimes they must be opposite (bar) or near (L)
+	 * @param p : a piece
+	 * @param top : 0 if no connector at top, 1 if connector at top
+	 * @param left : 0 if no connector at left, 1 if connector at left
+	 * @return a list of possible PieceType
+	 */
+	public static ArrayList<PieceType> possiblePieceType(Piece p, int top, int left) {
+		ArrayList<PieceType> possiblePieceType = new ArrayList<PieceType>();
+		if(p.getPosY() == filledGrid.getHeight() - 1 & p.getPosX() == filledGrid.getWidth() - 1) { // coin bas droit
+			for(PieceType pt : PieceType.values()) { // choix bonne piece
+				if(pt.getNbConnectors() == top + left) {
+					possiblePieceType.add(pt);
+				}
+			}
+		}
+		else if(p.getPosY() == filledGrid.getHeight() - 1 | p.getPosX() == filledGrid.getWidth() - 1) { // dernière ligne/colonne
+			for(PieceType pt : PieceType.values()) { // choix bonnes pieces possibles
+				if(pt.getNbConnectors() >= top + left & pt.getNbConnectors() <= 1 + top + left) {
+					possiblePieceType.add(pt);
+				}
+			}
+		}
+		else { // autres pieces sans contrainte bas et droite
+			for(PieceType pt : PieceType.values()) { // choix bonnes pieces possibles
+				if(pt.getNbConnectors() >= top + left & pt.getNbConnectors() <= 2 + top + left) {
+					possiblePieceType.add(pt);
+				}
+			}
+		}
+		return possiblePieceType;
+	}
+	
+	public static void choosePieceTypeAndOrientation(Piece p, ArrayList<PieceType> possiblePieceType) {
+		if(filledGrid.isCorner(p.getPosY(), p.getPosX()) & possiblePieceType.contains(PieceType.BAR)) {
+			possiblePieceType.remove(PieceType.BAR); // si coin on retire BAR car impossible
+		}
+
+		ArrayList<Integer> rand = new ArrayList<Integer>();
+		for(int i=0 ; i<possiblePieceType.size() ; i++) {
+			rand.add(i);
+		}
+		Collections.shuffle(rand);
+		for(int r : rand) { // on va tester aléatoirement les types de pieces
+			p.setType(possiblePieceType.get(r));
+			System.out.println(p.getType());
+			System.out.println(p.getType().getIntValue());
+			System.out.println(p.getPossibleOrientations());
+			for(Orientation ori : p.getPossibleOrientations()) {
+				p.setOrientation(ori);
+				if(filledGrid.isValidOrientation(p.getPosY(), p.getPosX())) {
+					break; // si orientation ok on quitte boucle for, sinon on passera a la piece d apres
+				}
+			}
+			if(filledGrid.isValidOrientation(p.getPosY(), p.getPosX())) {
+				break; // si orientation ok on quitte boucle for, sinon on passera a la piece d apres
 			}
 		}
 	}
@@ -216,5 +317,10 @@ public class Generator {
 		}
 		//DEBUGSystem.out.println("tmpi =" + tmpi + " & tmpj = " + tmpj);
 		return new int[] { tmpi, tmpj };
+	}
+	
+	public static void main(String[] args) {
+		Generator gen = new Generator(3, 3, -1);
+		gen.generateGrillFilled();
 	}
 }
