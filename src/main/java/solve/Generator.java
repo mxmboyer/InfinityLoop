@@ -236,17 +236,111 @@ public class Generator {
 			System.out.println(p.getType());
 			System.out.println(p.getType().getIntValue());
 			System.out.println(p.getPossibleOrientations());
-			for(Orientation ori : p.getPossibleOrientations()) {
+			ArrayList<Orientation> possibleOrientation = p.getPossibleOrientations();
+			Collections.shuffle(possibleOrientation);
+			for(Orientation ori : possibleOrientation) {
 				p.setOrientation(ori);
 				System.out.println(p.getConnectors());
-				if(filledGrid.isValidOrientation(p.getPosY(), p.getPosX())) {
+				if(isValidOrientationForGridCreation(p.getPosY(), p.getPosX())) {
 					break; // si orientation ok on quitte boucle for, sinon on passera a la piece d apres
 				}
 			}
-			if(filledGrid.isValidOrientation(p.getPosY(), p.getPosX())) {
+			if(isValidOrientationForGridCreation(p.getPosY(), p.getPosX())) {
 				break; // si orientation ok on quitte boucle for, sinon on passera a la piece d apres
 			}
 		}
+	}
+	
+	/**
+	 * With the 2 params we get the piece and check if it is connected to its neighbors when necessary
+	 * @param line : int for number of the line 
+	 * @param column : int for the number of the column
+	 * @return true if orientation ok, false if not ok
+	 */
+	public static boolean isValidOrientationForGridCreation(int line, int column) {
+		Piece p = filledGrid.getPiece(line, column);
+		
+		Piece tn = filledGrid.topNeighbor(p);
+		Piece ln = filledGrid.leftNeighbor(p);
+		Piece rn = filledGrid.rightNeighbor(p);
+		Piece bn = filledGrid.bottomNeighbor(p);
+
+		if (p.getType() != PieceType.VOID) {
+			if (line == 0) {
+				if (column == 0) {
+					if (p.hasLeftConnector()) {
+						return false;
+					}
+				} else if (column == filledGrid.getWidth() - 1) {
+					if (p.hasRightConnector()) {
+						return false;
+					}
+				}
+				if (p.hasTopConnector()) {
+					return false;
+				}
+				if (!p.hasLeftConnector() && ln != null && ln.hasRightConnector()) {
+					return false;
+				}
+				if (p.hasLeftConnector() && ln != null && !ln.hasRightConnector()) {
+					return false;
+				}
+
+			} else if (line > 0 && line < filledGrid.getHeight() - 1) {
+				if (column == 0) {
+					if (p.hasLeftConnector()) {
+						return false;
+					}
+
+				} else if (column == filledGrid.getWidth() - 1) {
+					if (p.hasRightConnector()) {
+						return false;
+					}
+				}
+
+				if (!p.hasLeftConnector() && ln != null && ln.hasRightConnector()) {
+					return false;
+				}
+				if (p.hasLeftConnector() && ln != null && !ln.hasRightConnector()) {
+					return false;
+				}
+				if (!p.hasTopConnector() && tn != null && tn.hasBottomConnector()) {
+					return false;
+				}
+				if (p.hasTopConnector() && tn != null && !tn.hasBottomConnector()) {
+					return false;
+				}
+
+			} else if (line == filledGrid.getHeight() - 1) {
+				if (column == 0) {
+					if (p.hasLeftConnector()) {
+						return false;
+					}
+				} else if (column == filledGrid.getWidth() - 1) {
+					if (p.hasRightConnector()) {
+						return false;
+					}
+				}
+				if (p.hasBottomConnector()) {
+					return false;
+				}
+				if (!p.hasLeftConnector() && ln != null && ln.hasRightConnector()) {
+					return false;
+				}
+				if (p.hasLeftConnector() && ln != null && !ln.hasRightConnector()) {
+					return false;
+				}
+
+			}
+			if (p.hasLeftConnector() && ln == null) {
+				return false;
+			}
+			if (p.hasTopConnector() && tn == null) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 	
 	public static void generateLevel(String fileName) throws IOException { 
