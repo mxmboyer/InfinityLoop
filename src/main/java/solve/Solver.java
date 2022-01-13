@@ -16,28 +16,17 @@ import gui.Grid;
 public class Solver {
 	
 	private final Grid inputGrid;
-	List<Piece> piecesNonFixees = new ArrayList<Piece>();
 	private final String fileNameOutput;
 	
 	public Solver(Grid inputGrid, String fileNameOutput) {
 		this.inputGrid = new Grid(inputGrid.getWidth(), inputGrid.getHeight());
 		Generator.copyGrid(inputGrid, this.inputGrid, 0, 0);
-		for(int h=0 ; h<this.inputGrid.getHeight(); h++) {
-			for(int w=0 ; w<this.inputGrid.getWidth(); w++) {
-				this.piecesNonFixees.add(this.inputGrid.getPiece(h, w));
-			}
-		}
 		this.fileNameOutput = fileNameOutput;
 	}
 	
 	public Solver(String fileNameInput, String fileNameOutput) {
 		this.inputGrid = new Grid(0,0);
 		this.inputGrid.generateGridFromFile(fileNameInput);
-		for(int h=0 ; h<this.inputGrid.getHeight(); h++) {
-			for(int w=0 ; w<this.inputGrid.getWidth(); w++) {
-				this.piecesNonFixees.add(this.inputGrid.getPiece(h, w));
-			}
-		}
 		this.fileNameOutput = fileNameOutput;
 	}
 	
@@ -46,6 +35,8 @@ public class Solver {
 		
 		Piece tn = this.inputGrid.topNeighbor(p);
 		Piece ln = this.inputGrid.leftNeighbor(p);
+		Piece rn = this.inputGrid.rightNeighbor(p);
+		Piece bn = this.inputGrid.bottomNeighbor(p);
 		
 		LinkedList<Orientation> connecteurs;
 		LinkedList<Orientation> toSupp = new LinkedList<Orientation>();
@@ -101,12 +92,14 @@ public class Solver {
 						toSupp.add(ori);
 					}
 
-				} else if (line == this.inputGrid.getHeight() - 1) {
+				} 
+				else if (line == this.inputGrid.getHeight() - 1) {
 					if (column == 0) {
 						if (connecteurs.contains(Orientation.WEST)) {
 							toSupp.add(ori);
 						}
-					} else if (column == this.inputGrid.getWidth() - 1) {
+					} 
+					else if (column == this.inputGrid.getWidth() - 1) {
 						if (connecteurs.contains(Orientation.EAST)) {
 							toSupp.add(ori);
 						}
@@ -128,6 +121,12 @@ public class Solver {
 				if (connecteurs.contains(Orientation.NORTH) && tn == null) {
 					toSupp.add(ori);
 				}
+				if (connecteurs.contains(Orientation.SOUTH) && bn == null) {
+					toSupp.add(ori);
+				}
+				if (connecteurs.contains(Orientation.EAST) && rn == null) {
+					toSupp.add(ori);
+				}
 			}
 			for(Orientation ori : toSupp) {
 				p.deleteFromPossibleOrientation(ori);
@@ -136,8 +135,7 @@ public class Solver {
 	}
 
 	public boolean solveGrid(int i, int j) { //à l'appel de cette fonction ds le main i et j = 0
-		// prbl : si la grille est pas solvable -> à gérer
-		int h, w, x, y, departY, departX;;
+		int h, w, x, y, departX;;
 		Piece p, p2;
 		for(h=i ; h<this.inputGrid.getHeight(); h++) {
 			for(w=j ; w<this.inputGrid.getWidth(); w++) {
@@ -153,52 +151,52 @@ public class Solver {
 						p.turnFromPossibleOrientation();
 						p.setFixed(true);
 						System.out.println("piece ok");
-						this.piecesNonFixees.remove(p);
 					}
 					
-					if(p.getPossibleOrientations().size()==0) {
-						Piece pieceRetour = this.piecesNonFixees.get(0);
-						System.out.println(h + " " + w);
+					else if(p.getPossibleOrientations().size()==0) {
+						p.setPossibleOrientations(p.getType().getListOfPossibleOri());
+						p.setFixed(false);
+						Piece pieceRetour = null;
 						departX = w-1;
 						for(y=h; y>=0; y--) {
-							for(x=departX; x>=0 && y>=0; x--) {
-								System.out.println(this.inputGrid.getPiece(y, x).isFixed());
-								if(!this.inputGrid.getPiece(y, x).isFixed()) {
+							for(x=departX; x>=0; x--) {
+								p2 = this.inputGrid.getPiece(y, x);
+								System.out.println(y + " " + x);
+								System.out.println(p2.isFixed());
+								if(!p2.isFixed()) {
 									pieceRetour = this.inputGrid.getPiece(y, x);
 									break;
 								}
-							}
-							if(!this.inputGrid.getPiece(y, x).isFixed()) {
-								break;
-							}
-							departX = 0;
-							
-						}
-						System.out.println(pieceRetour);
-						pieceRetour.deleteFromPossibleOrientation(pieceRetour.getOrientation());
-						pieceRetour.turnFromPossibleOrientation();
-						departY = pieceRetour.getPosY();
-						departX = pieceRetour.getPosX()+1;
-						for(y=departY; y<=p.getPosY(); y++) {
-							for(x=departX; y<=p.getPosY() && x<=p.getPosX(); x++) {
-								p2 = this.inputGrid.getPiece(y, x);
 								p2.setPossibleOrientations(p2.getType().getListOfPossibleOri());
 								p2.setFixed(false);
 							}
-							departX=0;
+							if(x!=-1) break;
+							departX = this.inputGrid.getWidth() - 1;
 						}
-						solveGrid(pieceRetour.getPosY(), pieceRetour.getPosX());
-						return false;
+						if(pieceRetour==null) {
+							//grille non solvable
+							System.out.println("SOLVED : false");
+							return false;
+						}
+						else {
+							pieceRetour.deleteFromPossibleOrientation(pieceRetour.getOrientation());
+							pieceRetour.turnFromPossibleOrientation();
+							return solveGrid(pieceRetour.getPosY(), pieceRetour.getPosX());
+						}
 					}
 					
 					else {
 						p.turnFromPossibleOrientation();
-						System.out.println("orientation selectionee : " + p.getOrientation());
 					}
 				}
-				System.out.println("orientation finale : " + p.getOrientation());
+				System.out.println("orientation : " + p.getOrientation());
 			}
 			j=0;
+		}
+		Checker check = new Checker(this.inputGrid);
+		if(!check.isSolution()) {
+			System.out.println("SOLVED : false error");
+			return false;
 		}
 		System.out.println("SOLVED : true");
 		this.inputGrid.GenerateFileFromGrid(this.fileNameOutput);
@@ -208,7 +206,6 @@ public class Solver {
 	public static void main(String[] args) {
 		Solver s = new Solver("test_solver_input.txt", "test_solver.txt");
 		s.solveGrid(0, 0);
-
 	}
 
 }
