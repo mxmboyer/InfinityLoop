@@ -30,7 +30,7 @@ public class Solver {
 		this.fileNameOutput = fileNameOutput;
 	}
 	
-	public void eliminatePossibleOrientation(int line, int column) {
+	public boolean isValidOrientationSolve(int line, int column, LinkedList<Orientation> connecteurs) {
 		Piece p = this.inputGrid.getPiece(line, column);
 		
 		Piece tn = this.inputGrid.topNeighbor(p);
@@ -38,99 +38,108 @@ public class Solver {
 		Piece rn = this.inputGrid.rightNeighbor(p);
 		Piece bn = this.inputGrid.bottomNeighbor(p);
 		
+		if (p.getType() != PieceType.VOID && p.getType() != PieceType.FOURCONN) {
+			if (line == 0) {
+				if (column == 0) {
+					if (connecteurs.contains(Orientation.WEST)) {
+						return false;
+					}
+				} 
+				else if (column == this.inputGrid.getWidth() - 1) {
+					if (connecteurs.contains(Orientation.EAST)) {
+						return false;
+					}
+				}
+				if (connecteurs.contains(Orientation.NORTH)) {
+					return false;
+				}
+				if (!connecteurs.contains(Orientation.WEST) && ln != null && ln.hasRightConnector()) {
+					return false;
+				}
+				if (connecteurs.contains(Orientation.WEST) && ln != null && !ln.hasRightConnector()) {
+					return false;
+				}
+
+			} 
+			else if (line > 0 && line < this.inputGrid.getHeight() - 1) {
+				if (column == 0) {
+					if (connecteurs.contains(Orientation.WEST)) {
+						return false;
+					}
+
+				} 
+				else if (column == this.inputGrid.getWidth() - 1) {
+					if (connecteurs.contains(Orientation.EAST)) {
+						return false;
+					}
+				}
+
+				if (!connecteurs.contains(Orientation.WEST) && ln != null && ln.hasRightConnector()) {
+					return false;
+				}
+				if (connecteurs.contains(Orientation.WEST) && ln != null && !ln.hasRightConnector()) {
+					return false;
+				}
+				if (!connecteurs.contains(Orientation.NORTH) && tn != null && tn.hasBottomConnector()) {
+					return false;
+				}
+				if (connecteurs.contains(Orientation.NORTH) && tn != null && !tn.hasBottomConnector()) {
+					return false;
+				}
+
+			} 
+			else if (line == this.inputGrid.getHeight() - 1) {
+				if (column == 0) {
+					if (connecteurs.contains(Orientation.WEST)) {
+						return false;
+					}
+				} 
+				else if (column == this.inputGrid.getWidth() - 1) {
+					if (connecteurs.contains(Orientation.EAST)) {
+						return false;
+					}
+				}
+				if (connecteurs.contains(Orientation.SOUTH)) {
+					return false;
+				}
+				if (!connecteurs.contains(Orientation.WEST) && ln != null && ln.hasRightConnector()) {
+					return false;
+				}
+				if (connecteurs.contains(Orientation.WEST) && ln != null && !ln.hasRightConnector()) {
+					return false;
+				}
+
+			}
+			if (connecteurs.contains(Orientation.WEST) && ln == null) {
+				return false;
+			}
+			if (connecteurs.contains(Orientation.NORTH) && tn == null) {
+				return false;
+			}
+			if (connecteurs.contains(Orientation.SOUTH) && bn == null) {
+				return false;
+			}
+			if (connecteurs.contains(Orientation.EAST) && rn == null) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public void eliminatePossibleOrientation(int line, int column) {
+		Piece p = this.inputGrid.getPiece(line, column);
 		LinkedList<Orientation> connecteurs;
 		LinkedList<Orientation> toSupp = new LinkedList<Orientation>();
 		
-		if (p.getType() != PieceType.VOID && p.getType() != PieceType.FOURCONN) {
-			for(Orientation ori : p.getPossibleOrientations()) {
-				connecteurs = p.getType().setConnectorsList(ori);
-				if (line == 0) {
-					if (column == 0) {
-						if (connecteurs.contains(Orientation.WEST)) {
-							toSupp.add(ori);
-						}
-					} 
-					else if (column == this.inputGrid.getWidth() - 1) {
-						if (connecteurs.contains(Orientation.EAST)) {
-							toSupp.add(ori);
-						}
-					}
-					if (connecteurs.contains(Orientation.NORTH)) {
-						toSupp.add(ori);
-					}
-					if (!connecteurs.contains(Orientation.WEST) && ln != null && ln.hasRightConnector()) {
-						toSupp.add(ori);
-					}
-					if (connecteurs.contains(Orientation.WEST) && ln != null && !ln.hasRightConnector()) {
-						toSupp.add(ori);
-					}
-
-				} 
-				else if (line > 0 && line < this.inputGrid.getHeight() - 1) {
-					if (column == 0) {
-						if (connecteurs.contains(Orientation.WEST)) {
-							toSupp.add(ori);
-						}
-
-					} 
-					else if (column == this.inputGrid.getWidth() - 1) {
-						if (connecteurs.contains(Orientation.EAST)) {
-							toSupp.add(ori);
-						}
-					}
-
-					if (!connecteurs.contains(Orientation.WEST) && ln != null && ln.hasRightConnector()) {
-						toSupp.add(ori);
-					}
-					if (connecteurs.contains(Orientation.WEST) && ln != null && !ln.hasRightConnector()) {
-						toSupp.add(ori);
-					}
-					if (!connecteurs.contains(Orientation.NORTH) && tn != null && tn.hasBottomConnector()) {
-						toSupp.add(ori);
-					}
-					if (connecteurs.contains(Orientation.NORTH) && tn != null && !tn.hasBottomConnector()) {
-						toSupp.add(ori);
-					}
-
-				} 
-				else if (line == this.inputGrid.getHeight() - 1) {
-					if (column == 0) {
-						if (connecteurs.contains(Orientation.WEST)) {
-							toSupp.add(ori);
-						}
-					} 
-					else if (column == this.inputGrid.getWidth() - 1) {
-						if (connecteurs.contains(Orientation.EAST)) {
-							toSupp.add(ori);
-						}
-					}
-					if (connecteurs.contains(Orientation.SOUTH)) {
-						toSupp.add(ori);
-					}
-					if (!connecteurs.contains(Orientation.WEST) && ln != null && ln.hasRightConnector()) {
-						toSupp.add(ori);
-					}
-					if (connecteurs.contains(Orientation.WEST) && ln != null && !ln.hasRightConnector()) {
-						toSupp.add(ori);
-					}
-
-				}
-				if (connecteurs.contains(Orientation.WEST) && ln == null) {
-					toSupp.add(ori);
-				}
-				if (connecteurs.contains(Orientation.NORTH) && tn == null) {
-					toSupp.add(ori);
-				}
-				if (connecteurs.contains(Orientation.SOUTH) && bn == null) {
-					toSupp.add(ori);
-				}
-				if (connecteurs.contains(Orientation.EAST) && rn == null) {
-					toSupp.add(ori);
-				}
+		for(Orientation ori : p.getPossibleOrientations()) {
+			connecteurs = p.getType().setConnectorsList(ori);
+			if(!this.isValidOrientationSolve(line, column, connecteurs)) {
+				toSupp.add(ori);
 			}
-			for(Orientation ori : toSupp) {
-				p.deleteFromPossibleOrientation(ori);
-			}
+		}
+		
+		for(Orientation ori : toSupp) {
+			p.deleteFromPossibleOrientation(ori);
 		}
 	}
 
