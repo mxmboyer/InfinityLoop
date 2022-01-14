@@ -18,10 +18,18 @@ public enum Orientation {
 	
 	private final int compassDirection;
 	
+	/**
+	 * Constructor of the enum, taking one argument as input
+	 * @param compassDirection : int representing the orientation
+	 */
 	Orientation(int compassDirection) {
 		this.compassDirection = compassDirection;
 	}
 	
+	/**
+	 * Getter for compassDirection
+	 * @return an int representing the orientation with a compass
+	 */
 	public int getCompassDirection() {
 		return this.compassDirection;
 	}

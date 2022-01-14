@@ -6,11 +6,19 @@ import gui.Grid;
 public class Checker {
 	private final Grid inputGrid;
 	
+	/**
+	 * Create a checker with a grid to check
+	 * @param inputGrid : Grid
+	 */
 	public Checker(Grid inputGrid) {
 		this.inputGrid = new Grid(inputGrid.getWidth(), inputGrid.getHeight());
 		Generator.copyGrid(inputGrid, this.inputGrid, 0, 0);
 	}
 	
+	/**
+	 * Create a checker with a file name of a grid to generate and check
+	 * @param fileName
+	 */
 	public Checker(String fileName) {
 		this.inputGrid = new Grid(0, 0);
 		this.inputGrid.generateGridFromFile(fileName);

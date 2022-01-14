@@ -1,29 +1,31 @@
 package solve;
 
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-
 import components.Orientation;
-import components.Pair;
 import components.Piece;
 import components.PieceType;
 import gui.Grid;
 
 public class Solver {
-	
 	private final Grid inputGrid;
 	private final String fileNameOutput;
 	
+	/**
+	 * Constructor of the class, version with a grid as input
+	 * @param inputGrid : grid to solve, already read from a file
+	 * @param fileNameOutput : String for the name of the file with the grid solved in it at the end
+	 */
 	public Solver(Grid inputGrid, String fileNameOutput) {
 		this.inputGrid = new Grid(inputGrid.getWidth(), inputGrid.getHeight());
 		Generator.copyGrid(inputGrid, this.inputGrid, 0, 0);
 		this.fileNameOutput = fileNameOutput;
 	}
 	
+	/**
+	 * Constructor of the class, version with a file name as input
+	 * @param fileNameInput : String for the name of the file which contains the grid to solve
+	 * @param fileNameOutput : String for the name of the file with the grid solved in it at the end
+	 */
 	public Solver(String fileNameInput, String fileNameOutput) {
 		this.inputGrid = new Grid(0,0);
 		this.inputGrid.generateGridFromFile(fileNameInput);
@@ -229,10 +231,4 @@ public class Solver {
 		this.inputGrid.GenerateFileFromGrid(this.fileNameOutput);
 		return true;
 	}
-	
-	public static void main(String[] args) {
-		Solver s = new Solver("test_solver_input.txt", "test_solver.txt");
-		s.solveGrid(0, 0);
-	}
-
 }
