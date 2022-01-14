@@ -19,7 +19,25 @@ import gui.Grid;
  */
 public class Generator {
 	private static Grid filledGrid;
-
+	
+	/**
+	 * Constructor of the class Generator, initiate the Grid associate to the class
+	 * @param w : width of the Grid to generate
+	 * @param h : height of the Grid to generate
+	 * @param c : nbcc of the Grid to generate
+	 */
+	public Generator(int w, int h, int c) {
+		Generator.filledGrid = new Grid(w, h, c);
+	}
+	
+	/**
+	 * Getter for the Grid attribute filledGrid
+	 * @return the filled grid of this Generator
+	 */
+	public Grid getFilledGrid() {
+		return this.filledGrid;
+	}
+	
 	/**_
 	 * @param output
 	 *            file name
@@ -29,18 +47,10 @@ public class Generator {
 	 * @throws FileNotFoundException
 	 * @throws UnsupportedEncodingException
 	 */
-	
-	public Generator(int w, int h, int c) {
-		Generator.filledGrid = new Grid(w, h, c);
-	}
-	
-	public Grid getFilledGrid() {
-		return this.filledGrid;
-	}
-	
 	public static void generateLevel(String fileName, Grid inputGrid) {
 		//parametres du prof -> pas compris inputGrid
 	}
+	
 	/*
 	public static void generateGrillFilled() {
 		int i, j, rand;
@@ -149,6 +159,9 @@ public class Generator {
 		}
 	}*/
 	
+	/**
+	 * function to generate a grid which can be solved
+	 */
 	public static void generateGrillFilled() {
 		for(int h=0 ; h<filledGrid.getHeight() ; h++) {
 			for(int w=0 ; w<filledGrid.getWidth() ; w++) {
@@ -204,7 +217,7 @@ public class Generator {
 				}
 			}
 		}
-		else if(p.getPosY() == filledGrid.getHeight() - 1 || p.getPosX() == filledGrid.getWidth() - 1) { // derni�re ligne/colonne
+		else if(p.getPosY() == filledGrid.getHeight() - 1 || p.getPosX() == filledGrid.getWidth() - 1) { // derniere ligne/colonne
 			for(PieceType pt : PieceType.values()) { // choix bonnes pieces possibles
 				if(pt.getNbConnectors() >= top + left && pt.getNbConnectors() <= 1 + top + left) {
 					possiblePieceType.add(pt);
@@ -221,6 +234,11 @@ public class Generator {
 		return possiblePieceType;
 	}
 	
+	/**
+	 * for a piece p of the grid, choose randomly its type and orientation
+	 * @param p : a Piece for which we are going to test its type and orientation
+	 * @param possiblePieceType : a List of possible types for this piece p
+	 */
 	public static void choosePieceTypeAndOrientation(Piece p, ArrayList<PieceType> possiblePieceType) {
 		if(filledGrid.isCorner(p.getPosY(), p.getPosX()) && possiblePieceType.contains(PieceType.BAR)) {
 			possiblePieceType.remove(PieceType.BAR); // si coin on retire BAR car impossible
@@ -231,7 +249,7 @@ public class Generator {
 			rand.add(i);
 		}
 		Collections.shuffle(rand);
-		for(int r : rand) { // on va tester al�atoirement les types de pieces
+		for(int r : rand) { // on va tester aleatoirement les types de pieces
 			p.setType(possiblePieceType.get(r));
 			System.out.println(p.getType());
 			System.out.println(p.getType().getIntValue());
@@ -330,6 +348,12 @@ public class Generator {
 				if (p.hasLeftConnector() && ln != null && !ln.hasRightConnector()) {
 					return false;
 				}
+				if (!p.hasTopConnector() && tn != null && tn.hasBottomConnector()) {
+					return false;
+				}
+				if (p.hasTopConnector() && tn != null && !tn.hasBottomConnector()) {
+					return false;
+				}
 
 			}
 			if (p.hasLeftConnector() && ln == null) {
@@ -343,13 +367,19 @@ public class Generator {
 		return true;
 	}
 	
+	/**
+	 * generate a solvable grid with generateGrillFiled, randomize the orientations of the pieces and write them in
+	 * the file
+	 * @param fileName : a name for the output file which contains the Grid
+	 * @throws IOException
+	 */
 	public static void generateLevel(String fileName) throws IOException { 
 		
 		Generator.generateGrillFilled();
 			
 		if(Generator.filledGrid.getNbcc()!=-1) {
-			//on compte le nombre de nbcc et si ça correspond pas au nbr demandé
-			//alors on regénère une grille jusqu'à ce que ce soit bon 
+			//on compte le nombre de nbcc et si ca correspond pas au nbr demand�
+			//alors on regenere une grille jusqu'a�ce que ce soit bon 
 			
 			//plan b : rajouter ou retirer qq connecteurs pour avoir un bon nbcc
 			// coder une fonction qui compte le nombre de nbcc !
@@ -411,10 +441,5 @@ public class Generator {
 		}
 		//DEBUGSystem.out.println("tmpi =" + tmpi + " & tmpj = " + tmpj);
 		return new int[] { tmpi, tmpj };
-	}
-	
-	public static void main(String[] args) {
-		Generator gen = new Generator(3, 3, -1);
-		gen.generateGrillFilled();
 	}
 }
