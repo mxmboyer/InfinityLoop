@@ -618,6 +618,10 @@ public class Grid {
 		return s;
 	}
 	
+	/**
+	 * Permet de generer une grille a partir d'un fichier
+	 * @param fileName: name of the input file
+	 */
 	public void generateGridFromFile(String fileName) {
 		FileReader fr = null;
 		try {
@@ -654,6 +658,10 @@ public class Grid {
 		}
 	}
 	
+	/**
+	 * Permet de generer un fichier a partir d'une grille
+	 * @param fileName: name of the output file
+	 */
 	public void GenerateFileFromGrid(String fileName) {
 		try {
 			FileWriter fw = new FileWriter(new File(fileName));

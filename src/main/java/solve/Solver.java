@@ -30,6 +30,13 @@ public class Solver {
 		this.fileNameOutput = fileNameOutput;
 	}
 	
+	/**
+	 * Permet de verifier si une orientation est correcte par rapport a ses voisins
+	 * @param line : int for number of the line 
+	 * @param column : int for the number of the column
+	 * @param connecteurs : list of the connectors of the piece
+	 * @return true si l'orientation est correcte, false sinon
+	 */
 	public boolean isValidOrientationSolve(int line, int column, LinkedList<Orientation> connecteurs) {
 		Piece p = this.inputGrid.getPiece(line, column);
 		
@@ -126,6 +133,11 @@ public class Solver {
 		return true;
 	}
 	
+	/**
+	 * Enleve les orientations impossibles d'une piece en fonction de ses voisins
+	 * @param line : int for number of the line 
+	 * @param column : int for the number of the column
+	 */
 	public void eliminatePossibleOrientation(int line, int column) {
 		Piece p = this.inputGrid.getPiece(line, column);
 		LinkedList<Orientation> connecteurs;
@@ -143,11 +155,17 @@ public class Solver {
 		}
 	}
 
+	/**
+	 * Permet de résoudre une grille si elle est solvable
+	 * @param i : int for number of the line 
+	 * @param j : int for the number of the column
+	 * @return true si la grille est solvable et solvee, false sinon
+	 */
 	public boolean solveGrid(int i, int j) { //à l'appel de cette fonction ds le main i et j = 0
-		int h, w, x, y, departX;;
+		int h, w, x, y, departX;
 		Piece p, p2;
-		for(h=i ; h<this.inputGrid.getHeight(); h++) {
-			for(w=j ; w<this.inputGrid.getWidth(); w++) {
+		for(h=i; h<this.inputGrid.getHeight(); h++) {
+			for(w=j; w<this.inputGrid.getWidth(); w++) {
 				System.out.println(h + "," + w + ": ");
 				p = this.inputGrid.getPiece(h, w);
 				System.out.println(p.getType().toString());

@@ -16,6 +16,10 @@ public class Checker {
 		this.inputGrid.generateGridFromFile(fileName);
 	}
 	
+	/**
+	 * Permet de verifier si une grille est solvee
+	 * @return true si solvee, false sinon
+	 */
 	public boolean isSolution() {
 		Piece[][] pieces = this.inputGrid.getAllPieces();
 		boolean check = true;

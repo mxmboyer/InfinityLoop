@@ -204,7 +204,7 @@ public class Generator {
 				}
 			}
 		}
-		else if(p.getPosY() == filledGrid.getHeight() - 1 || p.getPosX() == filledGrid.getWidth() - 1) { // dernière ligne/colonne
+		else if(p.getPosY() == filledGrid.getHeight() - 1 || p.getPosX() == filledGrid.getWidth() - 1) { // derniï¿½re ligne/colonne
 			for(PieceType pt : PieceType.values()) { // choix bonnes pieces possibles
 				if(pt.getNbConnectors() >= top + left && pt.getNbConnectors() <= 1 + top + left) {
 					possiblePieceType.add(pt);
@@ -231,7 +231,7 @@ public class Generator {
 			rand.add(i);
 		}
 		Collections.shuffle(rand);
-		for(int r : rand) { // on va tester aléatoirement les types de pieces
+		for(int r : rand) { // on va tester alï¿½atoirement les types de pieces
 			p.setType(possiblePieceType.get(r));
 			System.out.println(p.getType());
 			System.out.println(p.getType().getIntValue());
@@ -353,7 +353,6 @@ public class Generator {
 			
 			//plan b : rajouter ou retirer qq connecteurs pour avoir un bon nbcc
 			// coder une fonction qui compte le nombre de nbcc !
-			
 		}
 		
 		try {
