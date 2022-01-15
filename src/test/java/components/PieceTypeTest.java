@@ -9,6 +9,7 @@ public class PieceTypeTest {
 	@Test
 	public void getIntValueTest() {
 		assertEquals(PieceType.LTYPE.getIntValue(), 5);
+		//test
 	}
 
 }
