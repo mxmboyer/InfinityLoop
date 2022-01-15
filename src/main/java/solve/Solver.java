@@ -168,67 +168,70 @@ public class Solver {
 		Piece p, p2;
 		for(h=i; h<this.inputGrid.getHeight(); h++) {
 			for(w=j; w<this.inputGrid.getWidth(); w++) {
-				System.out.println(h + "," + w + ": ");
+				//System.out.println(h + "," + w + ": ");
 				p = this.inputGrid.getPiece(h, w);
-				System.out.println(p.getType().toString());
-				if(!p.isFixed()) {
+				//System.out.println(p.getType().toString());
 					
-					this.eliminatePossibleOrientation(h, w);
-					System.out.println(p.getPossibleOrientations());
-					
-					if(p.getPossibleOrientations().size()==1) { 
-						p.turnFromPossibleOrientation();
-						p.setFixed(true);
-						System.out.println("piece ok");
-					}
-					
-					else if(p.getPossibleOrientations().size()==0) {
-						p.setPossibleOrientations(p.getType().getListOfPossibleOri());
-						p.setFixed(false);
-						Piece pieceRetour = null;
-						departX = w-1;
-						for(y=h; y>=0; y--) {
-							for(x=departX; x>=0; x--) {
-								p2 = this.inputGrid.getPiece(y, x);
-								System.out.println(y + " " + x);
-								System.out.println(p2.isFixed());
-								if(!p2.isFixed()) {
-									pieceRetour = this.inputGrid.getPiece(y, x);
-									break;
-								}
-								p2.setPossibleOrientations(p2.getType().getListOfPossibleOri());
-								p2.setFixed(false);
+				this.eliminatePossibleOrientation(h, w);
+				//System.out.println(p.getPossibleOrientations());
+				
+				if(p.getPossibleOrientations().size()==1) { 
+					p.turnFromPossibleOrientation();
+					p.setFixed(true);
+					//System.out.println("piece ok");
+				}
+				
+				else if(p.getPossibleOrientations().size()==0) {
+					p.setPossibleOrientations(p.getType().getListOfPossibleOri());
+					p.setFixed(false);
+					Piece pieceRetour = null;
+					departX = w-1;
+					for(y=h; y>=0; y--) {
+						for(x=departX; x>=0; x--) {
+							p2 = this.inputGrid.getPiece(y, x);
+							//System.out.println(y + " " + x);
+							//System.out.println(p2.isFixed());
+							if(!p2.isFixed()) {
+								pieceRetour = this.inputGrid.getPiece(y, x);
+								break;
 							}
-							if(x!=-1) break;
-							departX = this.inputGrid.getWidth() - 1;
+							p2.setPossibleOrientations(p2.getType().getListOfPossibleOri());
+							p2.setFixed(false);
 						}
-						if(pieceRetour==null) {
-							//grille non solvable
-							System.out.println("SOLVED : false");
-							return false;
-						}
-						else {
-							pieceRetour.deleteFromPossibleOrientation(pieceRetour.getOrientation());
-							pieceRetour.turnFromPossibleOrientation();
-							return solveGrid(pieceRetour.getPosY(), pieceRetour.getPosX());
-						}
+						if(x!=-1) break;
+						departX = this.inputGrid.getWidth() - 1;
 					}
-					
+					if(pieceRetour==null) {
+						//grille non solvable
+						System.out.println("SOLVED : false");
+						return false;
+					}
 					else {
-						p.turnFromPossibleOrientation();
+						pieceRetour.deleteFromPossibleOrientation(pieceRetour.getOrientation());
+						pieceRetour.turnFromPossibleOrientation();
+						return solveGrid(pieceRetour.getPosY(), pieceRetour.getPosX());
 					}
 				}
-				System.out.println("orientation : " + p.getOrientation());
+				
+				else {
+					p.turnFromPossibleOrientation();
+				}
+				//System.out.println("orientation : " + p.getOrientation());
 			}
 			j=0;
 		}
 		Checker check = new Checker(this.inputGrid);
 		if(!check.isSolution()) {
-			System.out.println("SOLVED : false error");
+			//System.out.println("SOLVED : false error");
 			return false;
 		}
 		System.out.println("SOLVED : true");
 		this.inputGrid.GenerateFileFromGrid(this.fileNameOutput);
 		return true;
 	}
+	
+	/*public static void main(String[] args) {
+		Solver s = new Solver("test_solver_input_solvable.txt", "testSolverGrillSolvable.txt");
+		s.solveGrid(0, 0);
+	}*/
 }

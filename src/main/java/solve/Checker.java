@@ -33,7 +33,7 @@ public class Checker {
 		boolean check = true;
 		for(int h = 0 ; h < this.inputGrid.getHeight() && check; h++) {
 			for(int w = 0 ; w < this.inputGrid.getWidth() && check ; w++) {
-				if(!this.inputGrid.isTotallyConnected(pieces[h][w])) {
+				if(!this.inputGrid.isValidOrientation(h,w)) {
 					check = false;
 					System.out.println("SOLVED : false");
 				}
