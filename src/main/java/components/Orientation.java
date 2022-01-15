@@ -67,7 +67,11 @@ public enum Orientation {
 		}
 	}
 
-	
+	/**
+	 * For a piece p, gives the coordinates of its opposed piece depending of its orientation (of the piece)
+	 * @param p : a Piece
+	 * @return a tab of length = 2 with 2 integers
+	 */
 	public static int[] getOpposedPieceCoordinates(Piece p) {
 		int [] oppPiece = new int[2];
 		switch(p.getOrientation().getCompassDirection()) {
