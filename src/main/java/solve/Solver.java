@@ -202,7 +202,7 @@ public class Solver {
 					}
 					if(pieceRetour==null) {
 						//grille non solvable
-						System.out.println("SOLVED : false");
+						//System.out.println("SOLVED : false");
 						return false;
 					}
 					else {
@@ -224,8 +224,8 @@ public class Solver {
 			//System.out.println("SOLVED : false error");
 			return false;
 		}
-		System.out.println("SOLVED : true");
-		this.inputGrid.GenerateFileFromGrid(this.fileNameOutput);
+		//System.out.println("SOLVED : true");
+		this.inputGrid.generateFileFromGrid(this.fileNameOutput);
 		return true;
 	}
 	

@@ -35,13 +35,13 @@ public class Checker {
 			for(int w = 0 ; w < this.inputGrid.getWidth() && check ; w++) {
 				if(!this.inputGrid.isValidOrientation(h,w)) {
 					check = false;
-					System.out.println("SOLVED : false");
+					//System.out.println("SOLVED : false");
 				}
 			}
 		}
-		if(check) {
+		/*if(check) {
 			System.out.println("SOLVED : true");
-		}
+		}*/
 		return check;
 	}
 }
