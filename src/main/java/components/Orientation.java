@@ -30,7 +30,7 @@ public enum Orientation {
 	 * Getter for compassDirection
 	 * @return an int representing the orientation with a compass
 	 */
-	//junit
+	
 	public int getCompassDirection() {
 		return this.compassDirection;
 	}
@@ -54,8 +54,7 @@ public enum Orientation {
 	 * 
 	 * @return an Orientation turned of 90� to the right (clockwise)
 	 */
-	//junit
-	Orientation turn90() {
+	public Orientation turn90() {
 		switch(this.compassDirection) {
 			case 0:
 				return Orientation.EAST;
@@ -68,7 +67,7 @@ public enum Orientation {
 		}
 	}
 
-	//junit
+	
 	public static int[] getOpposedPieceCoordinates(Piece p) {
 		int [] oppPiece = new int[2];
 		switch(p.getOrientation().getCompassDirection()) {
@@ -96,7 +95,7 @@ public enum Orientation {
 	 * 
 	 * @return an Orientation which is the opposed as the actual one
 	 */
-	//junit
+	
 	public Orientation getOpposedOrientation() {
 		switch(this.compassDirection) {
 			case 0:

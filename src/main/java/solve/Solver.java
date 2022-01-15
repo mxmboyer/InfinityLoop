@@ -16,8 +16,7 @@ public class Solver {
 	 * @param fileNameOutput : String for the name of the file with the grid solved in it at the end
 	 */
 	public Solver(Grid inputGrid, String fileNameOutput) {
-		this.inputGrid = new Grid(inputGrid.getWidth(), inputGrid.getHeight());
-		Generator.copyGrid(inputGrid, this.inputGrid, 0, 0);
+		this.inputGrid = inputGrid;
 		this.fileNameOutput = fileNameOutput;
 	}
 	

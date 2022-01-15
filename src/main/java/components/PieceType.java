@@ -1,6 +1,7 @@
 package components;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -32,12 +33,10 @@ public enum PieceType {
 	 * @param orientation
 	 * @return
 	 */
-	//junit
 	Orientation getOrientation(Orientation orientation) {
 		return orientation;
 	}
 	
-	//junit
 	public int getIntValue() {
 		return this.intValue;
 	}
@@ -46,7 +45,6 @@ public enum PieceType {
 	 * Given the actual PieceType, tells all the possible Orientation for this piece
 	 * @return a list of possible orientations
 	 */
-	//junit
 	public ArrayList<Orientation> getListOfPossibleOri() {
 		ArrayList<Orientation> oriList = new ArrayList<Orientation>();
 		switch(this.intValue) {
@@ -81,7 +79,6 @@ public enum PieceType {
 		return oriList;
 	}
 	
-	//junit
 	public LinkedList<Orientation> setConnectorsList(Orientation orientation) {
 		LinkedList<Orientation> connectorsList = new LinkedList<Orientation>();
 		switch(this.intValue) {
@@ -113,7 +110,6 @@ public enum PieceType {
 		return connectorsList;
 	}
 	
-	//junit
 	public static PieceType getTypefromValue(int typeValue) {
 		for(PieceType pt : PieceType.values()) {
 			if(typeValue == pt.intValue) {
@@ -123,7 +119,6 @@ public enum PieceType {
 		return PieceType.VOID; //� modifier : trouver + propre
 	}
 
-	//junit
 	public int getNbConnectors() {
 		return this.connectors;
 	}

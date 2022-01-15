@@ -178,8 +178,7 @@ public class Piece {
 		else {
 			this.orientation = ori.get(0);
 			this.connectors = type.setConnectorsList(orientation);
-		}
-		
+		}		
 	}
 
 	@Override
