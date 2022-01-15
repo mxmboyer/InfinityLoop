@@ -16,6 +16,11 @@ public class Piece {
 
 	private boolean isFixed;
 
+	/**
+	 * Basic constructor of the class Piece with the 2 coordinates of the piece
+	 * @param posY : int representing in which line is the piece
+	 * @param posX : int representing in which column is the piece
+	 */
 	public Piece(int posY, int posX) {
 		this.posX = posX;
 		this.posY = posY;
@@ -25,7 +30,14 @@ public class Piece {
 		this.isFixed = false; // Is there any orientation for the piece
 		this.possibleOrientations = type.getListOfPossibleOri();
 	}
-
+	
+	/**
+	 * A more complete constructor for the class Piece, with the type of the piece and its orientation in addition
+	 * @param posY : int representing in which line is the piece
+	 * @param posX : int representing in which column is the piece
+	 * @param type : the type of the piece
+	 * @param orientation : the orientation of the piece
+	 */
 	public Piece(int posY, int posX, PieceType type, Orientation orientation) {
 		this.posX = posX;
 		this.posY = posY;
@@ -36,6 +48,14 @@ public class Piece {
 		this.possibleOrientations = type.getListOfPossibleOri();
 	}
 
+	/**
+	 * Another version of the complete constructor for the class Piece with the type and the orientation of the piece
+	 * given as integers and not PieceType and Orientation
+	 * @param posY : int representing in which line is the piece
+	 * @param posX : int representing in which column is the piece
+	 * @param typeValue : the type of the piece as an integer between 0 and 5
+	 * @param orientationValue : the orientation of the piece as an integer between 0 and 3
+	 */
 	public Piece(int posY, int posX, int typeValue, int orientationValue) {
 		this.posX = posX;
 		this.posY = posY;
@@ -45,15 +65,24 @@ public class Piece {
 		this.isFixed = false;
 		this.possibleOrientations = type.getListOfPossibleOri();
 	}
-
+	
+	/**
+	 * Setter for the possible orientations of the piece
+	 * @param possibleOrientations : a list containing the possible orientations of the piece
+	 */
 	public void setPossibleOrientations(ArrayList<Orientation> possibleOrientations) {
 		this.possibleOrientations = possibleOrientations;
 	}
 
+	/**
+	 * Getter for the possible orientations of the piece
+	 * @return a list containing Orientation
+	 */
 	public ArrayList<Orientation> getPossibleOrientations() {
 		return this.possibleOrientations;
 	}
 
+	
 	public LinkedList<Orientation> getInvPossibleOrientation() {
 		LinkedList<Orientation> invPossibleOrientations = new LinkedList<Orientation>();
 		for (Orientation ori : this.getPossibleOrientations()) {
@@ -156,7 +185,7 @@ public class Piece {
 	}
 
 	/**
-	 * Turn the piece 90� on the right and redefine the connectors's position
+	 * Turn the piece 90 degrees on the right and redefine the connectors's position
 	 */
 	public void turn() {
 		this.orientation = type.getOrientation(orientation.turn90());

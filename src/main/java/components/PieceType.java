@@ -23,20 +23,29 @@ public enum PieceType {
 	private final int connectors;
 	private final int intValue;
 	
+	/**
+	 * Constructor of the enumeration PieceType
+	 * @param connectors : int for the number of connectors of this type of piece
+	 * @param intValue : int representing the intValue of the type of the piece
+	 */
 	PieceType(int connectors, int intValue) {
 		this.connectors = connectors;
 		this.intValue = intValue;
 	}
 	
 	/**
-	 *  Pas compris pourquoi on veut get l'orientation de celle pass�e en param�tre ??
-	 * @param orientation
-	 * @return
+	 *  Return the given orientation
+	 * @param orientation : an Orientation
+	 * @return an Orientation same as the parameter
 	 */
 	Orientation getOrientation(Orientation orientation) {
 		return orientation;
 	}
 	
+	/**
+	 * getter for the intValue representing the type of the piece
+	 * @return
+	 */
 	public int getIntValue() {
 		return this.intValue;
 	}
@@ -79,6 +88,11 @@ public enum PieceType {
 		return oriList;
 	}
 	
+	/**
+	 * For a piece and its type and its orientation, gives the orientations of its connectors
+	 * @param orientation : orientation of the piece
+	 * @return a list of orientation
+	 */
 	public LinkedList<Orientation> setConnectorsList(Orientation orientation) {
 		LinkedList<Orientation> connectorsList = new LinkedList<Orientation>();
 		switch(this.intValue) {
@@ -110,15 +124,24 @@ public enum PieceType {
 		return connectorsList;
 	}
 	
+	/**
+	 * Gives the PieceType corresponding to the number given in parameter
+	 * @param typeValue : an int between 0 and 5
+	 * @return a PieceType
+	 */
 	public static PieceType getTypefromValue(int typeValue) {
 		for(PieceType pt : PieceType.values()) {
 			if(typeValue == pt.intValue) {
 				return pt;
 			}
 		}
-		return PieceType.VOID; //� modifier : trouver + propre
+		return PieceType.VOID;
 	}
-
+	
+	/**
+	 * getter for the number of the connectors of this type of piece
+	 * @return : an int between 0 and 4
+	 */
 	public int getNbConnectors() {
 		return this.connectors;
 	}
