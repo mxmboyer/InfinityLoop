@@ -662,7 +662,7 @@ public class Grid {
 	 * Permet de generer un fichier a partir d'une grille
 	 * @param fileName: name of the output file
 	 */
-	public void GenerateFileFromGrid(String fileName) {
+	public void generateFileFromGrid(String fileName) {
 		try {
 			FileWriter fw = new FileWriter(new File(fileName));
             fw.write(this.width + "\n" + this.height + "\n");

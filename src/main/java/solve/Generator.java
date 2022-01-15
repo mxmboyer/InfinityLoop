@@ -48,7 +48,7 @@ public class Generator {
 	 * @throws UnsupportedEncodingException
 	 */
 	public static void generateLevel(String fileName, Grid inputGrid) {
-		//parametres du prof -> pas compris inputGrid
+		inputGrid.generateFileFromGrid(fileName);
 	}
 	
 	/**
